@@ -2,6 +2,7 @@
 ![Ekran Resmi 2020-03-23 13 08 10](https://user-images.githubusercontent.com/25556230/77305626-6e3e5980-6d07-11ea-910e-d42d2bfd199e.png)
 
 ## Kullanım
+```
 python dereliUrlv2.py -u https://example.com -o output.txt
 
 ## Program akışı
