@@ -4,6 +4,7 @@
 ## Kullanım
 ```
 python dereliUrlv2.py -u https://example.com -o output.txt
+```
 
 ## Program akışı
 + Verilen siteye istek yapar.
