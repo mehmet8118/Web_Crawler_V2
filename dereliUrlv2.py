@@ -110,7 +110,7 @@ class Machine:
     def Google_Search_Path_Crawler(self):  # Google yardımıyla ek olarak url aldık
         print(colorama.Fore.GREEN + "Google Search:" + colorama.Style.RESET_ALL)
         query = "site:" + str(self.host_strip)
-        for j in search(query, num=50, stop=50, pause=2):
+        for j in search(query, num=90, stop=90, pause=2):
             print(colorama.Fore.RED + "[+] " + colorama.Style.RESET_ALL + str(j))
             self.GOOGLE_URL_LIST.add(str(j))
             for k in self.GOOGLE_URL_LIST:
@@ -186,7 +186,7 @@ class Machine:
             self.say += 1
             try:
                 for i in self.DIRECTORY_2:
-                    self.Section_3_Request = requests.get(self.host + '/' + i , timeout=2, headers= {'User-Agent':self.Random_Useragent})
+                    self.Section_3_Request = requests.get(self.host + '/' + i , timeout=5, headers= {'User-Agent':self.Random_Useragent})
                     self.Section_3_Content = self.Section_3_Request.content
                     links = re.findall('"((http|ftp)s?://.*?)"', self.Section_3_Content)
                     for t in links:
@@ -215,6 +215,7 @@ class Machine:
             self.TOTAL_URL.add(str(j))
         for t in self.GOOGLE_URL_LIST:
             self.TOTAL_URL.add(str(t))
+
     def Total(self):
         for k in self.TOTAL_URL:
             print(k)
@@ -242,20 +243,3 @@ print("-" * 70)
 Object_1.List_Pars()
 print("-" * 70)
 Object_1.Total()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-x
