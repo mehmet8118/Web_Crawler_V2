@@ -239,7 +239,7 @@ class Machine:
                     for t in links:
                         if self.host_strip_control in t[0]:
                             self.TOTAL_URL.add(t[0])
-                            Object_1.Output(str(self.host + '/' + t[0]))
+                            Object_1.Output(str(t[0]))
                             print(colorama.Fore.GREEN + "[+] " + colorama.Style.RESET_ALL + str(t[0]))
                         else:
                             self.NOT_CONTENT_URL_LIST.add(t[0])
