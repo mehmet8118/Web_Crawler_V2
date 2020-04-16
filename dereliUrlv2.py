@@ -45,10 +45,12 @@ class Machine:
         self.USERAGENT = [agent.strip() for agent in open('useragent.txt')]
         self.Random_Useragent = random.choice(self.USERAGENT)
 
+        
     def Output(self, put):
         self.file = open(str(self.output), "a+")
         self.file.writelines(str(put) + "\n")
 
+        
     def Request(self):
         # İstek burda yapılıyor ve bunun üzerinden işlem yapılıyor.
         self.req = requests.get(self.host)  # Siteye GET isteği yapılmıştır
@@ -58,18 +60,21 @@ class Machine:
         self.req_history = self.req.history  # Sitedeki yönlendirmeleri gösteriyor
         self.req_text = self.req.text  # Düzenli bir şekilde kaynak kodu
 
+        
     def Host_Look(self):
         # Düzenli gözükmesi için verilen site url'sini,  split işlemine sokarak temiz bir host elde ediyoruz.
         self.host_strip = self.host.split("://")[1]
         print(colorama.Fore.GREEN + "Taranan Site: " + colorama.Style.RESET_ALL + self.host_strip)
         Object_1.Output("Taranan Site: " + self.host_strip)
 
+        
     def Ip_Look(self):
         # Verdiğimiz sitenin ip bilgisini veriyor
         self.host_ip = socket.gethostbyname(self.host_strip)
         print(colorama.Fore.GREEN + "Ip Adresi: " + colorama.Style.RESET_ALL + self.host_ip)
         Object_1.Output("Ip Adresi: " + self.host_ip)
 
+        
     def Server_Check(self):
         # Headers bilgisinde yer alan bazı bilgileri derliyoruz.
         for i in self.req_headers.items():  # İtems ile headers üzerinde rahat işlem yapabiliyoruz
@@ -91,6 +96,7 @@ class Machine:
             else:
                 pass
 
+            
     def Robots_Txt(self):
         # Sitede robots dosyasını işliyoruz
         self.robots_txt = requests.get(self.host + '/robots.txt')
@@ -100,6 +106,43 @@ class Machine:
             Object_1.Output("-" * 50)
         else:
             pass
+        
+        
+    def Port_Scanner(self):
+        self.port_scanner_say = 0
+        print(colorama.Fore.GREEN + "Port Scanner" + colorama.Style.RESET_ALL)
+        self.portlist = [21, 22, 23, 25, 53, 69, 80, 110, 137, 139, 443, 445, 3306, 3389, 5432, 5900, 8080, 1433]
+        self.Codes = {
+            0: 'Port acik',
+            1: 'İşlem izni verilmedi',
+            2: 'Böyle bir dosya veya dizin yok',
+            6: 'Böyle bir cihaz veya adres yok',
+            11: 'Kaynak geçici olarak kullanılamıyor',
+            13: 'İzin reddedildi',
+            14: 'Hatalı adres',
+            61: 'Veri yok',
+            67: 'Bağlantı koptu',
+            71: 'Protokol hatası',
+            87: 'Çok fazla kullanıcı',
+            100: 'Ağ kapalı',
+            101: 'Ağa erişilemiyor',
+            110: 'Bağlantı zaman aşımına uğradı',
+            111: 'Bağlantı reddedildi',
+            112: 'Ana makine çalışmıyor',
+        }
+        for i in self.portlist:
+            try:
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                sock.settimeout(1)
+                ver = sock.connect_ex((self.host_ip, int(self.portlist[self.port_scanner_say])))
+                print(str(self.portlist[self.port_scanner_say]) + ' | ' + colorama.Fore.GREEN + self.Codes[
+                    ver] + colorama.Style.RESET_ALL)
+                sock.close()
+            except:
+                print(str(self.portlist[
+                              self.port_scanner_say]) + colorama.Fore.RED + " | Port Kapalı" + colorama.Style.RESET_ALL)
+            self.port_scanner_say += 1
+
 
     def Host_Strip_www(self):
         if 'www' in self.host_strip:
@@ -107,6 +150,7 @@ class Machine:
         else:
             self.host_strip_control = str(self.host_strip)
 
+            
     def Google_Search_Path_Crawler(self):  # Google yardımıyla ek olarak url aldık
         print(colorama.Fore.GREEN + "Google Search:" + colorama.Style.RESET_ALL)
         query = "site:" + str(self.host_strip)
@@ -117,6 +161,7 @@ class Machine:
                 self.GOOGLE_AND_CONTENT_URL_LIST_KNIT.add(k)
                 Object_1.Output(str(k))
 
+                
     def Url_Crawler_SECTION_1(self): # sayfa içerisindeki bütün url'leri çektik
         print(colorama.Fore.GREEN + "Url List Section 1: " + colorama.Style.RESET_ALL)
         html_page = self.req_content
@@ -135,6 +180,7 @@ class Machine:
             print(colorama.Fore.RED + "[+] " + colorama.Style.RESET_ALL + str(i))
             self.GOOGLE_AND_CONTENT_URL_LIST_KNIT.add(i)
 
+            
     def Url_Crawler_SECTION_2_(self): # DİZİN AYIRMA İŞLEMİ
         print(colorama.Fore.GREEN + "Url List Section 2: " + colorama.Style.RESET_ALL)
         for i in self.GOOGLE_AND_CONTENT_URL_LIST_KNIT:
@@ -175,6 +221,7 @@ class Machine:
             print(colorama.Fore.RED + "[+] " + colorama.Style.RESET_ALL + str(l))
             Object_1.Output(str(l))
 
+            
     def Url_Crawler_SECTION_3(self):
         print(colorama.Fore.GREEN + "Url List Section 3: " + colorama.Style.RESET_ALL)
         Object_1.Output("-" * 50)
@@ -206,6 +253,7 @@ class Machine:
                 pass
         Section_3_Crawl()
 
+        
     def List_Pars(self): #Topladığımız bütün linkleri birleştiriyoruz
         for g in self.DIRECTORY_2:
             self.TOTAL_URL.add(str(g))
@@ -216,9 +264,11 @@ class Machine:
         for t in self.GOOGLE_URL_LIST:
             self.TOTAL_URL.add(str(t))
 
+            
     def Total(self):
         for k in self.TOTAL_URL:
             print(k)
+
 
 
 
@@ -230,6 +280,8 @@ Object_1.Host_Look()
 Object_1.Ip_Look()
 print("-" * 70)
 Object_1.Robots_Txt()
+print("-" * 70)
+Object_1.Port_Scanner()
 print("-" * 70)
 Object_1.Host_Strip_www()
 Object_1.Url_Crawler_SECTION_1()
